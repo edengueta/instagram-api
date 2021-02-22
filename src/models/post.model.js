@@ -3,10 +3,10 @@ const mongoose = require ('mongoose');
 const Post = mongoose.model('Post', {
     userId: {
         type: mongoose.ObjectId,
-        required: true,
+        // required: true,
         ref: 'User',
     },
-    content:String,
+    caption:String,
     image: {
         type: String,
         required: true,

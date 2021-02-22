@@ -58,7 +58,6 @@ class UsersController {
 			const user = await User.findOne({
 				[property]: req.query[property]
 			})
-            console.log (user)
             if (user) {
                 res.send(true);
                 return
