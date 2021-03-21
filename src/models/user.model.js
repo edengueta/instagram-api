@@ -20,5 +20,6 @@ const User = mongoose.model('User', {
         default: ()=> new Date(),
         required: true,
     },
+    followers:[mongoose.ObjectId]
 });
 module.exports = User;

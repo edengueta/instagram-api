@@ -5,7 +5,7 @@ function auth(req, res, next) {
    
    try {
       const token = req.headers.authorization;
-      req.instaUser = jwt.verify(token,jwtSecret);
+      req.user = jwt.verify(token,jwtSecret);
       next();
    } catch (err) {
       res.sendStatus(401);
