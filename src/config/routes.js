@@ -29,6 +29,10 @@ routes.delete('/post/:id/likes/:userId', auth, PostsController.unlike);
 routes.put('/post/:id/comment', auth, PostsController.createComment);
 routes.get('/post/:id/comment', auth, PostsController.getComments);
 
+routes.get('/', (req,res)=>{res.send()});
+
+
+
 
 
 
