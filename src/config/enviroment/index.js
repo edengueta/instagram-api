@@ -5,5 +5,4 @@ let enviroment = development;
 if (process.env.NODE_ENV === 'production') {
     enviroment = production
 }
-console.log(process.env.NODE_ENV)
-module.exports = development;
+module.exports = enviroment;
