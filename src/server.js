@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(routes);
 
-
+console.log(dbUrl);
 
 mongoose.connect(dbUrl, {
 	useNewUrlParser: true,
