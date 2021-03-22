@@ -14,7 +14,6 @@ routes.post('/user/me', auth, UsersController.me);
 routes.get('/user/:username', auth, UsersController.get);
 routes.get('/user/:username/posts', auth, UsersController.getPosts);
 routes.get('/user', auth, UsersController.getAll);
-routes.get('/user/:id/follow', auth, UsersController.isFollow);
 routes.post('/user/:id/follow', auth, UsersController.follow);
 routes.post('/user/:id/unfollow', auth, UsersController.unfollow);
 

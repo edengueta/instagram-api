@@ -84,8 +84,8 @@ class UsersController {
                 res.send('no such user').status(404);
                 return;
             }
-            const {_id, username, avatar, bio} = user
-            res.send({_id, username, avatar, bio});
+            const {_id, username, avatar, bio, followers} = user;
+            res.send({_id, username, avatar, bio, followers});
         }
         catch (err) {
             console.log(err);
@@ -119,8 +119,8 @@ class UsersController {
                 username: new RegExp(req.query.username, 'i')
             })
             const result= users.map ( user=> {
-                const {_id, username, avatar, bio, createdAt} = user
-                return {_id, username,avatar, bio, createdAt}
+                const {_id, username, avatar, bio, createdAt, followers} = user;
+                return {_id, username,avatar, bio, createdAt, followers}
             })
             res.send(result);
         }
@@ -130,26 +130,7 @@ class UsersController {
         }
     }
 
-    static async isFollow(req, res) {
-        const userId = req.params.id;
-		const followerUserId =req.user._id;
-		try {
-			const follower = await User
-                .findById(userId)
-                .findOne({
-                    followers : followerUserId
-                });
-            if (!follower) {
-                res.send(false)
-                return
-            }
-            res.send(true);
 
-		} catch(err) {
-			console.log(err);
-			res.sendStatus(400);
-		}
-	}
     static async follow(req, res) {
 		const userId = req.params.id;
 		const followerUserId =req.user._id;
@@ -163,10 +144,11 @@ class UsersController {
 				res.sendStatus(404);
 				return;
 			}
+            
 			user.followers.addToSet(followerUserId);
 			await user.save();
-            const {_id, username, avatar, bio} = user
-			res.status(201).send({_id, username, avatar, bio})
+            const {_id, username, avatar, bio, followers} = user;
+			res.status(201).send({_id, username, avatar, bio, followers})
 		} catch(err) {
 			console.log(err);
 			res.sendStatus(400);
@@ -185,8 +167,8 @@ class UsersController {
 			}
 			user.followers.pull(followerUserId);
 			await user.save();
-            const {_id, username, avatar, bio} = user
-			res.status(204).send({_id, username, avatar, bio})		
+            const {_id, username, avatar, bio, followers} = user;
+			res.status(200).send({_id, username, avatar, bio, followers});	
         } catch(err) {
 			console.log(err);
 			res.sendStatus(400);
