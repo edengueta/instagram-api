@@ -13,8 +13,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(routes);
 
-console.log(dbUrl);
-
 mongoose.connect(dbUrl, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
@@ -23,6 +21,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	app.listen(port, () => {
-		console.log('Listening on http://localhost:' + port);
+		console.log('Listening');
 	});
 });

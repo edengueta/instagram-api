@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const cloudinary = require('../config/cloudinary/cloudinary.config')
 const Post = require('../models/post.model');
 const Comment = require('../models/comment.model');
 
@@ -42,12 +42,22 @@ class PostsController {
 		const fileName =req.file.filename;
 
 		try {
-			const imageBase64 = await fs.readFile('public/posts/'+fileName, {
-				encoding: 'base64',
-			})
+			const image = await cloudinary.v2.uploader.upload (
+
+				'public/posts/'+fileName,
+				{
+					public_id: "insta-post-" + fileName,
+					resource_type: 'image',
+				},
+				function(error, result) {
+					console.log(result);
+				}
+
+			)
+			  
 			const post = new Post({
 				caption: req.body.caption,
-				image: imageBase64,
+				image: image.url,
 				user: req.user._id,
 			});
 

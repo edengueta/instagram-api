@@ -1,5 +1,7 @@
 node_modules
 public
 !public/posts/.gitkeep
+src/config/cloudinary/api_secret.js
+
 .vscode
 .idea
