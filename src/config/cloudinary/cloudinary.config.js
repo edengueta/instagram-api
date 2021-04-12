@@ -1,4 +1,4 @@
-const api_secret = require("./api_secret");
+const api_secret = require("./api_secret") || undefined;
 const cloudinary = require('cloudinary');
 
 
