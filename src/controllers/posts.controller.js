@@ -57,7 +57,7 @@ class PostsController {
 			  
 			const post = new Post({
 				caption: req.body.caption,
-				image: image.url,
+				image: image.public_id,
 				user: req.user._id,
 			});
 
