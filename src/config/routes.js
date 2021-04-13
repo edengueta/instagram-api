@@ -25,9 +25,9 @@ routes.post('/user/avatar', auth,uploadAvatar.single('image'), UsersController.u
 routes.get('/post', auth, PostsController.feed);
 routes.get('/post/:id', auth, PostsController.get);
 routes.put('/post', auth, uploadPost.single('image'), PostsController.create);
-routes.get('/post/:id/likes/:userId', auth, PostsController.isLiked);
+// routes.get('/post/:id/likes/:userId', auth, PostsController.isLiked);
 routes.post('/post/:id/likes', auth, PostsController.like);
-routes.delete('/post/:id/likes/:userId', auth, PostsController.unlike);
+routes.post('/post/:id/likes/:userId', auth, PostsController.unlike);
 
 routes.put('/post/:id/comment', auth, PostsController.createComment);
 routes.get('/post/:id/comment', auth, PostsController.getComments);
