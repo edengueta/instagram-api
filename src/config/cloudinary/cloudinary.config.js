@@ -1,6 +1,6 @@
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 try {
-  const api_secret = require("./api_secret");
+  var api_secret = require("./api_secret");
 } catch(e) {
   console.log(e)
 }

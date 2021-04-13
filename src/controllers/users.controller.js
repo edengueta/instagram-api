@@ -3,6 +3,8 @@ const User = require('../models/user.model');
 const Post = require('../models/post.model');
 const jwt = require('jsonwebtoken');
 const {jwtSecret} = require ('../config/enviroment/index');
+const cloudinary = require('../config/cloudinary/cloudinary.config')
+
 
 
 class UsersController {
@@ -35,7 +37,8 @@ class UsersController {
             }
             const payload= {
                 _id:user._id,
-                username:user.username
+                username:user.username,
+                avatar:user.avatar
             }
             const token = jwt.sign(payload, jwtSecret)
             res.send({token});
@@ -72,7 +75,7 @@ class UsersController {
 	}
 
     static me (req, res) {
-        res.send(req.user)            
+        res.send(req.user)
     }
 
     static async get(req,res) {
@@ -175,6 +178,46 @@ class UsersController {
 		}
 	}
 
+    static async uploadAvatar(req, res) {
+		const fileName =req.file.filename;
+
+		try {
+            const image = await cloudinary.uploader.upload (
+
+				'public/avatars/'+fileName,
+				{
+					transformation: ["insta-1080"],
+					public_id: `${req.user.username}-profile-${fileName}`,
+					resource_type: 'image',
+					folder:'avatars'
+				},
+				function(error, result) {
+					console.log(result);
+				}
+			)
+
+			const user = await User.findById(req.user._id);
+			if(!user) {
+				res.sendStatus(404);
+				return;
+			}
+            user.avatar= image.url
+			await user.save();
+
+            const payload= {
+                _id:user._id,
+                username:user.username,
+                avatar:user.avatar
+            }
+            const token = jwt.sign(payload, jwtSecret)
+            res.status(200).send({token});
+
+        } catch(err) {
+			console.log(err);
+			res.sendStatus(400);
+		}
+
+	}
 
 }
 module.exports = UsersController;

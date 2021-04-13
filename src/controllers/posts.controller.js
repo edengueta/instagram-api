@@ -1,4 +1,4 @@
-const cloudinary = require('../config/cloudinary/cloudinary.config')
+const cloudinary = require('../config/cloudinary/cloudinary.config');
 const Post = require('../models/post.model');
 const Comment = require('../models/comment.model');
 
@@ -10,7 +10,7 @@ class PostsController {
 		try {
 			const posts = await Post
 				.find()
-				.populate('user', ['username', 'avater'])
+				.populate('user', ['username', 'avatar'])
 				.sort({ createdAt: req.query.sort || 1 });
 			res.send(posts);
 		} catch(err) {
@@ -42,12 +42,14 @@ class PostsController {
 		const fileName =req.file.filename;
 
 		try {
-			const image = await cloudinary.v2.uploader.upload (
+			const image = await cloudinary.uploader.upload (
 
 				'public/posts/'+fileName,
 				{
-					public_id: "insta-post-" + fileName,
+					transformation: ["insta-1080"],
+					public_id: `${req.user.username}-${fileName}`,
 					resource_type: 'image',
+					folder:'posts'
 				},
 				function(error, result) {
 					console.log(result);
@@ -57,7 +59,7 @@ class PostsController {
 			  
 			const post = new Post({
 				caption: req.body.caption,
-				image: image.public_id,
+				image: image.url,
 				user: req.user._id,
 			});
 

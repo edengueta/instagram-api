@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const upload = multer({dest: 'public/posts'});
+const uploadPost = multer({dest: 'public/posts'});
+const uploadAvatar = multer({dest: 'public/avatars'});
 const PostsController = require('../controllers/posts.controller');
 const UsersController = require('../controllers/users.controller')
 const auth = require('../middlewares/auth')
@@ -16,12 +17,14 @@ routes.get('/user/:username/posts', auth, UsersController.getPosts);
 routes.get('/user', auth, UsersController.getAll);
 routes.post('/user/:id/follow', auth, UsersController.follow);
 routes.post('/user/:id/unfollow', auth, UsersController.unfollow);
+routes.post('/user/avatar', auth,uploadAvatar.single('image'), UsersController.uploadAvatar);
+
 
 
 //Post routes
 routes.get('/post', auth, PostsController.feed);
 routes.get('/post/:id', auth, PostsController.get);
-routes.put('/post', auth, upload.single('image'), PostsController.create);
+routes.put('/post', auth, uploadPost.single('image'), PostsController.create);
 routes.get('/post/:id/likes/:userId', auth, PostsController.isLiked);
 routes.post('/post/:id/likes', auth, PostsController.like);
 routes.delete('/post/:id/likes/:userId', auth, PostsController.unlike);
