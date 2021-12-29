@@ -18,6 +18,8 @@ routes.get('/user', auth, UsersController.getAll);
 routes.post('/user/:id/follow', auth, UsersController.follow);
 routes.post('/user/:id/unfollow', auth, UsersController.unfollow);
 routes.post('/user/avatar', auth,uploadAvatar.single('image'), UsersController.uploadAvatar);
+routes.post('/user/avatar/remove', auth, UsersController.removeAvatar);
+
 
 
 

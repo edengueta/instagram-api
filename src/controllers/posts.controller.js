@@ -71,26 +71,6 @@ class PostsController {
 		}
 	}
 
-	// static async isLiked(req, res) {
-	// 	const id = req.params.id;
-	// 	const userId = req.user._id;
-	// 	try {
-	// 		const post = await Post
-	// 			.findById(id)
-	// 			.findOne({
-	// 				likes : userId
-	// 			});
-	// 		if(!post) {
-	// 			res.send(false);
-	// 			return;
-	// 		}
-	// 		res.send(true);
-	// 	} catch(err) {
-	// 		console.log(err);
-	// 		res.sendStatus(500);
-	// 	}
-	// }
-
 
 	static async like(req, res) {
 		const id = req.params.id;

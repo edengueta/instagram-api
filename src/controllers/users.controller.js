@@ -10,7 +10,8 @@ const cloudinary = require('../config/cloudinary/cloudinary.config')
 class UsersController {
 
     static async create (req,res) {
-        req.body.password= md5( md5(req.body.password ));
+        req.body.password= md5( md5(req.body.password));
+        req.body.username= req.body.username.toLowerCase();
         const user = new User(req.body);
 
 		try {
@@ -28,7 +29,7 @@ class UsersController {
 
         try {
             const user = await User.findOne({
-                username:req.body.username,
+                username:req.body.username.toLowerCase(),
                 password:md5( md5(req.body.password ))
             })
             if (!user) {
@@ -218,6 +219,30 @@ class UsersController {
 		}
 
 	}
+    static async removeAvatar(req,res) {
+
+        try {
+            const user = await User.findById(req.user._id);
+                if(!user) {
+                    res.sendStatus(404);
+                    return;
+                }
+                user.avatar= "";
+                await user.save();
+
+                const payload= {
+                    _id:user._id,
+                    username:user.username,
+                    avatar:user.avatar
+                }
+                const token = jwt.sign(payload, jwtSecret)
+                res.status(200).send({token});
+        } catch(err) {
+			console.log(err);
+			res.sendStatus(400);
+		}
+        
+    }
 
 }
 module.exports = UsersController;
