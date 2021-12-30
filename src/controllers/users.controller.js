@@ -244,5 +244,31 @@ class UsersController {
         
     }
 
+    static async replaceAvatar(req, res) {
+
+		try {
+			const user = await User.findById(req.user._id);
+			if(!user) {
+				res.sendStatus(404);
+				return;
+			}
+            user.avatar= req.body.image;
+
+			await user.save();
+
+            const payload= {
+                _id:user._id,
+                username:user.username,
+                avatar:user.avatar
+            }
+            const token = jwt.sign(payload, jwtSecret)
+            res.status(200).send({token});
+
+        } catch(err) {
+			console.log(err);
+			res.sendStatus(400);
+		}
+    }
+
 }
 module.exports = UsersController;
